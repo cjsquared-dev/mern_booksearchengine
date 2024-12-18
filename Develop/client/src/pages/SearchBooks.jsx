@@ -9,6 +9,8 @@ import {
 } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
 import Auth from '../utils/auth';
+import { SAVE_BOOK } from '../utils/mutations';
+import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
 const SearchBooks = () => {
@@ -73,7 +75,7 @@ const SearchBooks = () => {
     }
 
     try {
-      const { data } = await saveBook({
+      await saveBook({
         variables: { bookData: bookToSave },
       });
 

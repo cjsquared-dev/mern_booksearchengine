@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import {
   Container,
   Card,
@@ -6,9 +5,9 @@ import {
   Row,
   Col
 } from 'react-bootstrap';
-import { userQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { GET_ME } from '../utils/queries';
-import { DELETE_BOOK, REMOVE_BOOK } from '../utils/mutations';
+import { REMOVE_BOOK } from '../utils/mutations';
 
 
 import Auth from '../utils/auth';
@@ -30,7 +29,7 @@ const SavedBooks = () => {
     }
 
     try {
-      const { data } = await removeBook({
+      await removeBook({
         variables: { bookId }
       });
 
@@ -42,13 +41,13 @@ const SavedBooks = () => {
   };
 
   // if data isn't here yet, say so
-  if (!userDataLength) {
+  if (loading) {
     return <h2>LOADING...</h2>;
   }
 
   return (
     <>
-      <div fluid className="text-light bg-dark p-5">
+      <div className="text-light bg-dark p-5">
         <Container>
           <h1>Viewing saved books!</h1>
         </Container>
@@ -62,8 +61,8 @@ const SavedBooks = () => {
         <Row>
           {userData.savedBooks.map((book) => {
             return (
-              <Col md="4">
-                <Card key={book.bookId} border='dark'>
+              <Col md="4" key={book.bookId}>
+                <Card border='dark'>
                   {book.image ? <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
                   <Card.Body>
                     <Card.Title>{book.title}</Card.Title>
